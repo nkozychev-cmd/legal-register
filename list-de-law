@@ -1,0 +1,14 @@
+[
+  {
+    "law": "Energieeffizienzgesetz (EnEfG)",
+    "summary": "This law aims to increase energy efficiency across Germany to reduce energy consumption, fossil fuel use, and greenhouse gas emissions, while ensuring national and EU energy targets are met. It applies to public authorities and companies, particularly regarding energy- or environmental-management systems. Companies must establish such systems, create and publish plans for implementing energy-saving measures, and, if operating data centers or IT infrastructure, comply with efficiency and waste-heat reporting requirements. Obligations include documenting actions and providing information on waste-heat use. Reporting and follow-up deadlines are defined in the law, with specific requirements for public authorities and strategic measures at federal and state levels. Exemptions or thresholds are not explicitly stated here, but obligations primarily target companies with sufficient energy use to justify management systems.",
+    "link": "https://www.gesetze-im-internet.de/enefg/BJNR1350B0023.html",
+    "category": "energy"
+  },
+  {
+    "law": "EDL-G",
+    "summary": "This law applies to energy service providers, companies implementing energy-efficiency measures, and energy suppliers. It also covers end customers, except operators of certain emissions-traded installations, as well as public authorities (including the Bundeswehr, unless military purposes prevent application) and all companies that are not micro, small, or medium-sized enterprises under the EU definition. Companies in scope must implement energy- or environmental-management systems, document and report energy-saving measures, and follow any efficiency or waste-heat obligations. Exemptions include micro/small/medium enterprises, certain military activities, and specific emissions-traded installation operators. All applicable entities are responsible for compliance, including proper documentation and reporting. Deadlines and follow-up obligations are specified in the law.",
+    "link": "https://www.gesetze-im-internet.de/edl-g/BJNR148310010.html",
+    "category": "energy"
+  }
+]
