@@ -1,0 +1,52 @@
+[
+  {
+    "id": 1,
+    "question": "Hat Ihr Unternehmen in den letzten drei abgeschlossenen Kalenderjahren einen jährlichen durchschnittlichen Gesamtendenergieverbrauch von mehr als 7,5 GWh?",
+    "type": "yes/no"
+  },
+  {
+    "id": 2,
+    "question": "Hat Ihr Unternehmen in den letzten drei abgeschlossenen Kalenderjahren einen jährlichen durchschnittlichen Gesamtendenergieverbrauch von mehr als 2,5 GWh?",
+    "type": "yes/no"
+  },
+  {
+    "id": 3,
+    "question": "Betreibt Ihr Unternehmen ein Rechenzentrum, das vor dem 1. Juli 2026 in Betrieb genommen wurde?",
+    "type": "yes/no"
+  },
+  {
+    "id": 4,
+    "question": "Betreibt Ihr Unternehmen ein Rechenzentrum, das ab dem 1. Juli 2026 in Betrieb genommen wird?",
+    "type": "yes/no"
+  },
+  {
+    "id": 5,
+    "question": "Betreibt Ihr Unternehmen ein Rechenzentrum, das ab dem 1. Juli 2027 in Betrieb genommen wird?",
+    "type": "yes/no"
+  },
+  {
+    "id": 6,
+    "question": "Betreibt Ihr Unternehmen ein Rechenzentrum, das ab dem 1. Juli 2028 in Betrieb genommen wird?",
+    "type": "yes/no"
+  },
+  {
+    "id": 7,
+    "question": "Betreibt Ihr Unternehmen ein Wärmenetz, dem ein Angebot nach Abs. 3 Nr. 3 unterbreitet wurde?",
+    "type": "yes/no"
+  },
+  {
+    "id": 8,
+    "question": "Betreibt Ihr Unternehmen ein Rechenzentrum mit nicht redundanter Nennanschlussleistung ≥ 1 MW oder ein öffentliches Rechenzentrum ≥ 300 kW?",
+    "type": "yes/no"
+  },
+  {
+    "id": 9,
+    "question": "Betreibt Ihr Unternehmen IT-Systeme mit ≥ 500 kW oder im Auftrag öffentlicher Träger mit ≥ 300 kW?",
+    "type": "yes/no"
+  },
+  {
+    "id": 10,
+    "question": "Wird ein Rechenzentrum oder eine IT-Anlage Ihres Unternehmens vor dem 1. Juli 2027 außer Betrieb genommen?",
+    "type": "yes/no"
+  }
+]
