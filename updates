@@ -1,1 +1,14 @@
-
+[
+  {
+    "Uptades": "EU-Data-Act gilt ab 12. September: Mehr Kontrolle über Gerätedaten",
+    "summary": "Wer ein vernetztes Auto, E-Bike oder andere vernetzte Geräte wie Smart-TV oder Kühlschränke nutzt, bekommt mehr Kontrolle über seine Daten. Ab dem 12. September müssen Hersteller offenlegen, welche Informationen gesammelt werden – und wie man darauf zugreifen kann. Möglich macht das der sogenannte EU-Data-Act, der ab dann EU-weit verbindlich gilt.",
+    "link": "https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX:32023R2854",
+    "category": "data security"
+  },
+  {
+    "Updates": "Genehmigungsverfahren für erneuerbare Energien beschleunigt",
+    "summary": "Immissionsschutzrechtliche und wasserrechtliche Genehmigungsverfahren für Anlagen im Bereich erneuerbarer Energien wie Wind- und Solarenergie, Geothermie und Wärmepumpen werden deutlich beschleunigt – digital, bürokratiearm und pragmatisch. Wichtiges Element ist die Ausweisung sogenannter Beschleunigungsgebiete für Windenergieanlagen an Land einschließlich zugehöriger Energiespeicher am selben Standort nach den neuen Bestimmungen im Windenergieflächenbedarfsgesetz. Umweltbelange werden weiterhin gewahrt.",
+    "link": "https://www.bundesumweltministerium.de/pressemitteilung/bundesrat-beschliesst-gesetz-zur-umsetzung-der-red-iii-und-ebnet-schnelleren-genehmigungsverfahren-bei-erneuerbaren-energien-den-weg",
+    "category": "energy"
+  }
+]
