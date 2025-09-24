@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compliance Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7f9;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1E4E9A 0%, #3A7BD5 100%);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .top-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .top-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background: white;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #1E4E9A;
+            display: flex;
+            align-items: center;
+        }
+
+        .card-title i {
+            margin-right: 10px;
+        }
+
+        /* Compliance Chart */
+        .compliance-chart-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 20px;
+        }
+
+        .compliance-text {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #1E4E9A;
+            margin-bottom: 10px;
+        }
+
+        .compliance-label {
+            text-align: center;
+            color: #666;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #1E4E9A;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Updates */
+        .update-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .update-item {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+            font-size: 0.95rem;
+            color: #333;
+        }
+
+        .update-item:last-child {
+            border-bottom: none;
+        }
+
+        /* Checklist Styles */
+        .checklist-section {
+            background: white;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+        }
+
+        .checklist-header {
+            margin-bottom: 15px;
+        }
+
+        .checklist-title {
+            font-size: 1.8rem;
+            color: #1E4E9A;
+            margin-bottom: 5px;
+        }
+
+        .checklist-subtitle {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .checklist-item {
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            background-color: #f9f9f9;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .checklist-question {
+            font-weight: 600;
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+            text-align: left;
+        }
+
+        .checklist-options {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+        }
+
+        .checklist-option {
+            display: flex;
+            align-items: center;
+        }
+
+        .checklist-option input[type="radio"] {
+            display: none;
+        }
+
+        .checklist-option label {
+            cursor: pointer;
+            padding: 8px 20px;
+            border-radius: 25px;
+            background-color: #f0f0f0;
+            transition: all 0.2s;
+            user-select: none;
+        }
+
+        .checklist-option input[type="radio"]:checked + label {
+            background-color: #1E4E9A;
+            color: white;
+        }
+
+        .checklist-submit {
+            background: linear-gradient(135deg, #1E4E9A 0%, #3A7BD5 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.2s;
+        }
+
+        .checklist-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Regulations */
+        .reg-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .reg-item {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+            transition: background-color 0.2s;
+        }
+
+        .reg-item:hover {
+            background-color: #f0f5ff;
+        }
+
+        .reg-item:last-child {
+            border-bottom: none;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Compliance Dashboard</h1>
+            <p class="subtitle">Tracking regulatory compliance status</p>
+        </header>
+
+        <!-- Top Row: Compliance & Updates -->
+        <div class="top-row">
+            <!-- Compliance Status -->
+            <div class="card">
+                <h2 class="card-title"><i class="fas fa-chart-pie"></i> Compliance Status</h2>
+                <div class="compliance-chart-container">
+                    <canvas id="complianceChart"></canvas>
+                </div>
+                <div class="compliance-text" id="complianceText">0%</div>
+                <p class="compliance-label">Overall Compliance Rate</p>
+                <div class="stats">
+                    <div class="stat-item">
+                        <div class="stat-value" id="completedTasks">0</div>
+                        <div class="stat-label">Completed</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="pendingTasks">0</div>
+                        <div class="stat-label">Pending</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="totalTasks">0</div>
+                        <div class="stat-label">Total</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Updates -->
+            <div class="card">
+                <h2 class="card-title"><i class="fas fa-bell"></i> Recent Updates</h2>
+                <div class="update-list" id="updateList">
+                    <div class="update-item">Amendment to Workplace Safety Regulations – Aug 25, 2023</div>
+                    <div class="update-item">Energy Consumption Reduction Requirements – Aug 20, 2023</div>
+                    <div class="update-item">New Data Privacy Guidelines – Aug 10, 2023</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Checklist Section -->
+        <div class="checklist-section card">
+            <div class="checklist-header">
+                <h2 class="checklist-title">Applicability Checklist</h2>
+                <p class="checklist-subtitle">Complete the checklist to define applicable regulations for your company</p>
+            </div>
+            <div id="checklistItems">
+                <div class="loading">Loading checklist questions...</div>
+            </div>
+            <button class="checklist-submit" id="submitChecklist">Submit Checklist</button>
+        </div>
+
+        <!-- Regulations Section -->
+        <div class="card">
+            <h2 class="card-title"><i class="fas fa-file-alt"></i> Regulations</h2>
+            <div class="reg-list" id="regList">
+                <div class="loading">Loading regulations...</div>
+            </div>
+        </div>
+
+        <footer>
+            <p>Compliance Dashboard &copy; 2023 | Data sourced from Google Sheets</p>
+        </footer>
+    </div>
+
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script>
+        // Example compliance data
+        const completedTasks = 35;
+        const totalTasks = 45;
+        const pendingTasks = totalTasks - completedTasks;
+        const complianceRate = Math.round((completedTasks / totalTasks) * 100);
+
+        document.getElementById('completedTasks').innerText = completedTasks;
+        document.getElementById('pendingTasks').innerText = pendingTasks;
+        document.getElementById('totalTasks').innerText = totalTasks;
+
+        // Compliance Chart
+        const ctx = document.getElementById('complianceChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Completed', 'Pending'],
+                datasets: [{
+                    data: [completedTasks, pendingTasks],
+                    backgroundColor: ['#1E4E9A', '#E0E0E0'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '70%',
+                plugins: { legend: { display: false } }
+            }
+        });
+        document.getElementById('complianceText').innerText = complianceRate + "%";
+
+        // Mock Checklist Questions
+        const mockChecklistQuestions = [
+            "Does your company handle personal data of EU citizens?",
+            "Does your company employ more than 50 people?",
+            "Does your company operate in multiple countries?",
+            "Is your company in the financial services industry?",
+            "Does your company process health information?",
+            "Does your company have physical retail locations?",
+            "Does your company sell products online?",
+            "Does your company work with government contracts?",
+            "Does your company handle payment card information?",
+            "Does your company have remote workers?"
+        ];
+
+        function renderChecklist(questions) {
+            let html = "";
+            questions.forEach((question, index) => {
+                html += `
+                <div class="checklist-item">
+                    <div class="checklist-question">${index + 1}. ${question}</div>
+                    <div class="checklist-options">
+                        <div class="checklist-option">
+                            <input type="radio" id="q${index}_yes" name="q${index}" value="yes">
+                            <label for="q${index}_yes">Yes</label>
+                        </div>
+                        <div class="checklist-option">
+                            <input type="radio" id="q${index}_no" name="q${index}" value="no">
+                            <label for="q${index}_no">No</label>
+                        </div>
+                        <div class="checklist-option">
+                            <input type="radio" id="q${index}_undefined" name="q${index}" value="undefined" checked>
+                            <label for="q${index}_undefined">Not Defined</label>
+                        </div>
+                    </div>
+                </div>`;
+            });
+            document.getElementById("checklistItems").innerHTML = html;
+        }
+
+        renderChecklist(mockChecklistQuestions);
+
+        document.getElementById('submitChecklist').addEventListener('click', function() {
+            const answers = [];
+            mockChecklistQuestions.forEach((q, i) => {
+                const selectedOption = document.querySelector(`input[name="q${i}"]:checked`);
+                answers.push({ question: q, answer: selectedOption ? selectedOption.value : 'undefined' });
+            });
+            console.log('Checklist answers:', answers);
+            alert('Checklist submitted successfully! Based on your answers, we have identified the applicable regulations for your company.');
+        });
+
+        // Mock Regulations (replace with Google Sheet fetch in real app)
+        const mockRegulations = [
+            "TRGS 510 – Storage of hazardous substances",
+            "ISO 14001 – Environmental Management",
+            "GDPR – Data Protection",
+            "ISO 45001 – Occupational Health & Safety"
+        ];
+        let regHtml = "";
+        mockRegulations.forEach((reg, i) => {
+            regHtml += `<div class="reg-item">${i+1}. ${reg}</div>`;
+        });
+        document.getElementById('regList').innerHTML = regHtml;
+    </script>
+</body>
+</html>
