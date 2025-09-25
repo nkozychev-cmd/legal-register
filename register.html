@@ -1,72 +1,126 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Register</title>
-  <script type="module">
-    import { createClient } from "https://esm.sh/@supabase/supabase-js";
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.6/dist/umd/supabase.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f7f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .register-box {
+      background: #fff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 400px;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #1E4E9A;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 15px;
+      background: #1E4E9A;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #3A7BD5;
+    }
+    .message {
+      margin-top: 15px;
+      text-align: center;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="register-box">
+    <h2>Register</h2>
+    <input type="text" id="name" placeholder="Name" required />
+    <input type="text" id="surname" placeholder="Surname" required />
+    <input type="text" id="company" placeholder="Company" required />
+    <input type="email" id="email" placeholder="Email" required />
+    <input type="password" id="password" placeholder="Password" required />
+    <button id="registerBtn">Register</button>
+    <div class="message" id="message"></div>
+  </div>
 
-    const SUPABASE_URL = "https://YOUR_PROJECT_ID.supabase.co";
-    const SUPABASE_ANON_KEY = "YOUR_PUBLIC_ANON_KEY";
-    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  <script>
+    // Initialize Supabase
+    const supabaseUrl = "https://ielednnehezmsyrgtaaj.supabase.co";
+    const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImllbGVkbm5laGV6bXN5cmd0YWFqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg3MTg4NzIsImV4cCI6MjA3NDI5NDg3Mn0.iR1dq38M85V8dej-BpM9VodDLUXCLzwfuxnxKq6U-x0"; // replace with your anon key
+    const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
-    async function registerUser(e) {
-      e.preventDefault();
+    document.getElementById("registerBtn").addEventListener("click", async () => {
+      const name = document.getElementById("name").value.trim();
+      const surname = document.getElementById("surname").value.trim();
+      const company = document.getElementById("company").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const messageEl = document.getElementById("message");
 
-      const firstName = document.getElementById("first_name").value;
-      const lastName = document.getElementById("last_name").value;
-      const companyName = document.getElementById("company_name").value;
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
-
-      // Create user in Supabase Auth
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password
-      });
-
-      if (error) {
-        alert("❌ Registration failed: " + error.message);
+      if (!name || !surname || !company || !email || !password) {
+        messageEl.style.color = "red";
+        messageEl.textContent = "Please fill in all fields.";
         return;
       }
 
-      const user = data.user;
+      try {
+        // Step 1: Register user with Supabase Auth
+        const { data: authData, error: authError } = await supabaseClient.auth.signUp({
+          email,
+          password,
+        });
 
-      // Save profile details
-      if (user) {
-        const { error: profileError } = await supabase
-          .from("profiles")
-          .insert({
-            id: user.id,
-            first_name: firstName,
-            last_name: lastName,
-            company_name: companyName
-          });
-
-        if (profileError) {
-          console.error(profileError);
-          alert("❌ Failed to save profile.");
-        } else {
-          alert("✅ Registration successful!");
-          window.location.href = "index.html";
+        if (authError) {
+          messageEl.style.color = "red";
+          messageEl.textContent = authError.message;
+          return;
         }
-      }
-    }
 
-    window.registerUser = registerUser;
+        // Step 2: Save extra info in "profiles" table
+        const userId = authData.user.id;
+
+        const { error: dbError } = await supabaseClient.from("profiles").insert([
+          { id: userId, name, surname, company, email }
+        ]);
+
+        if (dbError) {
+          messageEl.style.color = "red";
+          messageEl.textContent = "Error saving profile: " + dbError.message;
+          return;
+        }
+
+        messageEl.style.color = "green";
+        messageEl.textContent = "Registration successful! Please confirm your email.";
+      } catch (err) {
+        console.error(err);
+        messageEl.style.color = "red";
+        messageEl.textContent = "Unexpected error. Please try again.";
+      }
+    });
   </script>
-</head>
-<body class="bg-gray-100">
-  <div class="max-w-md mx-auto mt-10 bg-white p-6 rounded shadow">
-    <h2 class="text-2xl font-bold mb-4">Sign In / Register</h2>
-    <form onsubmit="registerUser(event)" class="space-y-4">
-      <input id="first_name" type="text" placeholder="First Name" class="border p-2 w-full" required>
-      <input id="last_name" type="text" placeholder="Surname" class="border p-2 w-full" required>
-      <input id="company_name" type="text" placeholder="Company Name" class="border p-2 w-full" required>
-      <input id="email" type="email" placeholder="Email" class="border p-2 w-full" required>
-      <input id="password" type="password" placeholder="Password" class="border p-2 w-full" required>
-      <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded">Register</button>
-    </form>
-  </div>
 </body>
 </html>
